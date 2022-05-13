@@ -13,9 +13,11 @@ console.log('distpath:', distPath)
 app.use( cors() )
 app.use( express.urlencoded({ extended: true }) )
 app.use( express.static(distPath) )
+// Saknas: sökväg till hamster-bilderna
 
 // Endpoints
 app.use( '/fruits', fruitsRouter )
+// Saknas: /hamsters, /matches
 
 
 app.listen(PORT, () => {
