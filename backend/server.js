@@ -11,7 +11,10 @@ const distPath = path.join(__dirname, '/../dist/')
 console.log('distpath:', distPath)
 
 // Middleware
-// Saknas: logger middleware
+app.use( (req, res, next) => {
+	console.log(`${req.method}  ${req.url}  `, req.body)
+	next()
+} )
 app.use( cors() )
 app.use( express.urlencoded({ extended: true }) )
 
@@ -23,6 +26,11 @@ app.use('/img', express.static(path.join(__dirname, '/hamsterImages/')) )
 // Endpoints
 app.use( '/fruits', fruitsRouter )
 // Saknas: /hamsters, /matches
+
+// Övriga endpoints, för att fungera med React Router i frontend
+app.all('*', (req, res) => {
+	res.sendFile(distPath + 'index.html')
+})
 
 
 app.listen(PORT, () => {

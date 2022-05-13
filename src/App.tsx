@@ -1,30 +1,37 @@
 import { useState } from 'react'
 import './App.css'
 import { fixUrl } from './utils'
+import { Link, Route, Routes } from 'react-router-dom'
+import Start from './components/Start'
+import AllFruits from './components/AllFruits'
+import AddFruit from './components/AddFruit'
 
 function App() {
-	const [maybeData, setMaybeData] = useState<string[] | null>(null)
-
-	const getData: (() => Promise<void>) = async () => {
-		const response = await fetch(fixUrl('/fruits'))
-		const data = await response.json()
-		// om response.json misslyckas: kontrollera din URL, kontrollera om du får en HTML-sida
-		setMaybeData(data)
-	}
 
 	return (
 		<div className="app">
-			<header> My awesome fullstack app </header>
+			<header>
+				<h2>My awesome fullstack app</h2> 
+				<nav>
+					<Link to ="/"> Start </Link>
+					<Link to="/allfruits"> All fruits </Link>
+					<Link to="/addnew"> Add a new fruit </Link>
+				</nav>
+			</header>
 			<main>
-				<button onClick={getData}> Get data from API </button>
-				<section> {maybeData ? (
-					maybeData.map(fruit => (<p key={fruit}> {fruit} </p>))
-				) : 'No data yet...'} </section>
-
-				<img src={fixUrl("/img/hamster-14.jpg")} />
+				<Routes>
+					<Route path="/" element={<Start />} />
+					<Route path="/allfruits" element={<AllFruits />} />
+					<Route path="/addnew" element={<AddFruit />} />
+					<Route path="/*" element={<FourOhFour />} />
+				</Routes>
+				
 			</main>
 		</div>
 	)
+}
+function FourOhFour() {
+	return (<p> 404 not found!! </p>)
 }
 
 export default App
