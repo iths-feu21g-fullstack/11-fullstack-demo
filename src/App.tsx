@@ -1,45 +1,28 @@
 import { useState } from 'react'
-import logo from './logo.svg'
 import './App.css'
+import { fixUrl } from './utils'
 
 function App() {
-  const [count, setCount] = useState(0)
+	const [maybeData, setMaybeData] = useState<string[] | null>(null)
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+	const getData: (() => Promise<void>) = async () => {
+		const response = await fetch(fixUrl('/fruits'))
+		const data = await response.json()
+		// om response.json misslyckas: kontrollera din URL, kontrollera om du får en HTML-sida
+		setMaybeData(data)
+	}
+
+	return (
+		<div className="app">
+			<header> My awesome fullstack app </header>
+			<main>
+				<button onClick={getData}> Get data from API </button>
+				<section> {maybeData ? (
+					maybeData.map(fruit => (<p key={fruit}> {fruit} </p>))
+				) : 'No data yet...'} </section>
+			</main>
+		</div>
+	)
 }
 
 export default App

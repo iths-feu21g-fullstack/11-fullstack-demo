@@ -10,6 +10,7 @@ const distPath = __dirname + '/../dist/'
 console.log('distpath:', distPath)
 
 // Middleware
+// Saknas: logger middleware
 app.use( cors() )
 app.use( express.urlencoded({ extended: true }) )
 app.use( express.static(distPath) )
